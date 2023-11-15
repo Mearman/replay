@@ -1,0 +1,1393 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "ChangeStep": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "frame": {
+                    "description": "Defaults to main frame",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "selectors": {
+                    "description": "A list of alternative selectors that lead to selection of a single element\nto perform the step on. Currently, we support CSS selectors, ARIA selectors\n(start with 'aria/'), XPath selectors (start with `xpath/`) and text\nselectors (start with `text/`). Each selector could be a string or an array\nof strings. If it's a string, it means that the selector points directly to\nthe target element. If it's an array, the last element is the selector for\nthe target element and the preceding selectors point to the ancestor\nelements. If the parent element is a shadow root host, the subsequent\nselector is evaluated only against the shadow DOM of the host (i.e.,\n`parent.shadowRoot.querySelector`). If the parent element is not a shadow\nroot host, the subsequent selector is evaluated in the regular DOM (i.e.,\n`parent.querySelector`).\n\nDuring the execution, it's recommended that the implementation tries out\nall of the alternative selectors to improve reliability of the replay as\nsome selectors might get outdated over time.",
+                    "items": {
+                        "$ref": "#/definitions/Selector"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "change",
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "ClickStep": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "button": {
+                    "$ref": "#/definitions/PointerButtonType",
+                    "description": "Defaults to 'primary' if the device type is a mouse."
+                },
+                "deviceType": {
+                    "$ref": "#/definitions/PointerDeviceType",
+                    "description": "Pointer type for the event. Defaults to 'mouse'."
+                },
+                "duration": {
+                    "description": "Delay (in ms) between the mouse up and mouse down of the click.",
+                    "type": "number"
+                },
+                "frame": {
+                    "description": "Defaults to main frame",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "offsetX": {
+                    "description": "in px, relative to the top-left corner of the element content box. Defaults\nto the center of the element",
+                    "type": "number"
+                },
+                "offsetY": {
+                    "description": "in px, relative to the top-left corner of the element content box. Defaults\nto the center of the element",
+                    "type": "number"
+                },
+                "selectors": {
+                    "description": "A list of alternative selectors that lead to selection of a single element\nto perform the step on. Currently, we support CSS selectors, ARIA selectors\n(start with 'aria/'), XPath selectors (start with `xpath/`) and text\nselectors (start with `text/`). Each selector could be a string or an array\nof strings. If it's a string, it means that the selector points directly to\nthe target element. If it's an array, the last element is the selector for\nthe target element and the preceding selectors point to the ancestor\nelements. If the parent element is a shadow root host, the subsequent\nselector is evaluated only against the shadow DOM of the host (i.e.,\n`parent.shadowRoot.querySelector`). If the parent element is not a shadow\nroot host, the subsequent selector is evaluated in the regular DOM (i.e.,\n`parent.querySelector`).\n\nDuring the execution, it's recommended that the implementation tries out\nall of the alternative selectors to improve reliability of the replay as\nsome selectors might get outdated over time.",
+                    "items": {
+                        "$ref": "#/definitions/Selector"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "click",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "CloseStep": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "close",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "CustomStepParams": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "parameters": {},
+                "type": {
+                    "const": "customStep",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "DOMStringMap": {
+            "additionalProperties": {
+                "type": "string"
+            },
+            "type": "object"
+        },
+        "DoubleClickStep": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "button": {
+                    "$ref": "#/definitions/PointerButtonType",
+                    "description": "Defaults to 'primary' if the device type is a mouse."
+                },
+                "deviceType": {
+                    "$ref": "#/definitions/PointerDeviceType",
+                    "description": "Pointer type for the event. Defaults to 'mouse'."
+                },
+                "duration": {
+                    "description": "Delay (in ms) between the mouse up and mouse down of the click.",
+                    "type": "number"
+                },
+                "frame": {
+                    "description": "Defaults to main frame",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "offsetX": {
+                    "description": "in px, relative to the top-left corner of the element content box. Defaults\nto the center of the element",
+                    "type": "number"
+                },
+                "offsetY": {
+                    "description": "in px, relative to the top-left corner of the element content box. Defaults\nto the center of the element",
+                    "type": "number"
+                },
+                "selectors": {
+                    "description": "A list of alternative selectors that lead to selection of a single element\nto perform the step on. Currently, we support CSS selectors, ARIA selectors\n(start with 'aria/'), XPath selectors (start with `xpath/`) and text\nselectors (start with `text/`). Each selector could be a string or an array\nof strings. If it's a string, it means that the selector points directly to\nthe target element. If it's an array, the last element is the selector for\nthe target element and the preceding selectors point to the ancestor\nelements. If the parent element is a shadow root host, the subsequent\nselector is evaluated only against the shadow DOM of the host (i.e.,\n`parent.shadowRoot.querySelector`). If the parent element is not a shadow\nroot host, the subsequent selector is evaluated in the regular DOM (i.e.,\n`parent.querySelector`).\n\nDuring the execution, it's recommended that the implementation tries out\nall of the alternative selectors to improve reliability of the replay as\nsome selectors might get outdated over time.",
+                    "items": {
+                        "$ref": "#/definitions/Selector"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "doubleClick",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "EmulateNetworkConditionsStep": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "download": {
+                    "type": "number"
+                },
+                "latency": {
+                    "type": "number"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "emulateNetworkConditions",
+                    "type": "string"
+                },
+                "upload": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "HoverStep": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "frame": {
+                    "description": "Defaults to main frame",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "selectors": {
+                    "description": "A list of alternative selectors that lead to selection of a single element\nto perform the step on. Currently, we support CSS selectors, ARIA selectors\n(start with 'aria/'), XPath selectors (start with `xpath/`) and text\nselectors (start with `text/`). Each selector could be a string or an array\nof strings. If it's a string, it means that the selector points directly to\nthe target element. If it's an array, the last element is the selector for\nthe target element and the preceding selectors point to the ancestor\nelements. If the parent element is a shadow root host, the subsequent\nselector is evaluated only against the shadow DOM of the host (i.e.,\n`parent.shadowRoot.querySelector`). If the parent element is not a shadow\nroot host, the subsequent selector is evaluated in the regular DOM (i.e.,\n`parent.querySelector`).\n\nDuring the execution, it's recommended that the implementation tries out\nall of the alternative selectors to improve reliability of the replay as\nsome selectors might get outdated over time.",
+                    "items": {
+                        "$ref": "#/definitions/Selector"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "hover",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "JSONObject": {
+            "additionalProperties": {
+                "$ref": "#/definitions/JSONValue"
+            },
+            "type": "object"
+        },
+        "JSONValue": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/JSONObject"
+                },
+                {
+                    "items": {
+                        "$ref": "#/definitions/JSONValue"
+                    },
+                    "type": "array"
+                },
+                {
+                    "type": [
+                        "string",
+                        "number",
+                        "boolean"
+                    ]
+                }
+            ]
+        },
+        "Key": {
+            "enum": [
+                "\u0000",
+                "\n",
+                "\r",
+                " ",
+                "!",
+                "\"",
+                "#",
+                "$",
+                "%",
+                "&",
+                "'",
+                "(",
+                ")",
+                "*",
+                "+",
+                ",",
+                "-",
+                ".",
+                "/",
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                ":",
+                ";",
+                "<",
+                "=",
+                ">",
+                "?",
+                "@",
+                "A",
+                "Abort",
+                "Accept",
+                "Alt",
+                "AltGraph",
+                "AltLeft",
+                "AltRight",
+                "ArrowDown",
+                "ArrowLeft",
+                "ArrowRight",
+                "ArrowUp",
+                "Attn",
+                "AudioVolumeDown",
+                "AudioVolumeMute",
+                "AudioVolumeUp",
+                "B",
+                "Backquote",
+                "Backslash",
+                "Backspace",
+                "BracketLeft",
+                "BracketRight",
+                "C",
+                "Call",
+                "Camera",
+                "Cancel",
+                "CapsLock",
+                "Clear",
+                "Comma",
+                "ContextMenu",
+                "Control",
+                "ControlLeft",
+                "ControlRight",
+                "Convert",
+                "CrSel",
+                "D",
+                "Delete",
+                "Digit0",
+                "Digit1",
+                "Digit2",
+                "Digit3",
+                "Digit4",
+                "Digit5",
+                "Digit6",
+                "Digit7",
+                "Digit8",
+                "Digit9",
+                "E",
+                "Eject",
+                "End",
+                "EndCall",
+                "Enter",
+                "Equal",
+                "EraseEof",
+                "Escape",
+                "ExSel",
+                "Execute",
+                "F",
+                "F1",
+                "F10",
+                "F11",
+                "F12",
+                "F13",
+                "F14",
+                "F15",
+                "F16",
+                "F17",
+                "F18",
+                "F19",
+                "F2",
+                "F20",
+                "F21",
+                "F22",
+                "F23",
+                "F24",
+                "F3",
+                "F4",
+                "F5",
+                "F6",
+                "F7",
+                "F8",
+                "F9",
+                "G",
+                "H",
+                "Help",
+                "Home",
+                "I",
+                "Insert",
+                "J",
+                "K",
+                "KeyA",
+                "KeyB",
+                "KeyC",
+                "KeyD",
+                "KeyE",
+                "KeyF",
+                "KeyG",
+                "KeyH",
+                "KeyI",
+                "KeyJ",
+                "KeyK",
+                "KeyL",
+                "KeyM",
+                "KeyN",
+                "KeyO",
+                "KeyP",
+                "KeyQ",
+                "KeyR",
+                "KeyS",
+                "KeyT",
+                "KeyU",
+                "KeyV",
+                "KeyW",
+                "KeyX",
+                "KeyY",
+                "KeyZ",
+                "L",
+                "M",
+                "MediaPlayPause",
+                "MediaStop",
+                "MediaTrackNext",
+                "MediaTrackPrevious",
+                "Meta",
+                "MetaLeft",
+                "MetaRight",
+                "Minus",
+                "ModeChange",
+                "N",
+                "NonConvert",
+                "NumLock",
+                "Numpad0",
+                "Numpad1",
+                "Numpad2",
+                "Numpad3",
+                "Numpad4",
+                "Numpad5",
+                "Numpad6",
+                "Numpad7",
+                "Numpad8",
+                "Numpad9",
+                "NumpadAdd",
+                "NumpadDecimal",
+                "NumpadDivide",
+                "NumpadEnter",
+                "NumpadEqual",
+                "NumpadMultiply",
+                "NumpadSubtract",
+                "O",
+                "Open",
+                "P",
+                "PageDown",
+                "PageUp",
+                "Pause",
+                "Period",
+                "Play",
+                "Power",
+                "Print",
+                "PrintScreen",
+                "Props",
+                "Q",
+                "Quote",
+                "R",
+                "S",
+                "ScrollLock",
+                "Select",
+                "Semicolon",
+                "Shift",
+                "ShiftLeft",
+                "ShiftRight",
+                "Slash",
+                "SoftLeft",
+                "SoftRight",
+                "Space",
+                "T",
+                "Tab",
+                "U",
+                "V",
+                "VolumeDown",
+                "VolumeUp",
+                "W",
+                "X",
+                "Y",
+                "Z",
+                "ZoomOut",
+                "[",
+                "\\",
+                "]",
+                "^",
+                "_",
+                "`",
+                "a",
+                "b",
+                "c",
+                "d",
+                "e",
+                "f",
+                "g",
+                "h",
+                "i",
+                "j",
+                "k",
+                "l",
+                "m",
+                "n",
+                "o",
+                "p",
+                "q",
+                "r",
+                "s",
+                "t",
+                "u",
+                "v",
+                "w",
+                "x",
+                "y",
+                "z",
+                "{",
+                "|",
+                "}",
+                "~"
+            ],
+            "type": "string"
+        },
+        "KeyDownStep": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "key": {
+                    "$ref": "#/definitions/Key"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "keyDown",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "KeyUpStep": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "key": {
+                    "$ref": "#/definitions/Key"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "keyUp",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "NavigateStep": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "navigate",
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "NavigationEvent": {
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "const": "navigation",
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "Partial<JSONSerializable<HTMLElement>>": {
+            "properties": {
+                "ATTRIBUTE_NODE": {
+                    "const": 2,
+                    "type": "number"
+                },
+                "CDATA_SECTION_NODE": {
+                    "const": 4,
+                    "type": "number"
+                },
+                "COMMENT_NODE": {
+                    "const": 8,
+                    "type": "number"
+                },
+                "DOCUMENT_FRAGMENT_NODE": {
+                    "const": 11,
+                    "type": "number"
+                },
+                "DOCUMENT_NODE": {
+                    "const": 9,
+                    "type": "number"
+                },
+                "DOCUMENT_POSITION_CONTAINED_BY": {
+                    "const": 16,
+                    "type": "number"
+                },
+                "DOCUMENT_POSITION_CONTAINS": {
+                    "const": 8,
+                    "type": "number"
+                },
+                "DOCUMENT_POSITION_DISCONNECTED": {
+                    "const": 1,
+                    "type": "number"
+                },
+                "DOCUMENT_POSITION_FOLLOWING": {
+                    "const": 4,
+                    "type": "number"
+                },
+                "DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC": {
+                    "const": 32,
+                    "type": "number"
+                },
+                "DOCUMENT_POSITION_PRECEDING": {
+                    "const": 2,
+                    "type": "number"
+                },
+                "DOCUMENT_TYPE_NODE": {
+                    "const": 10,
+                    "type": "number"
+                },
+                "ELEMENT_NODE": {
+                    "const": 1,
+                    "type": "number"
+                },
+                "ENTITY_NODE": {
+                    "const": 6,
+                    "type": "number"
+                },
+                "ENTITY_REFERENCE_NODE": {
+                    "const": 5,
+                    "type": "number"
+                },
+                "NOTATION_NODE": {
+                    "const": 12,
+                    "type": "number"
+                },
+                "PROCESSING_INSTRUCTION_NODE": {
+                    "const": 7,
+                    "type": "number"
+                },
+                "TEXT_NODE": {
+                    "const": 3,
+                    "type": "number"
+                },
+                "accessKey": {
+                    "type": "string"
+                },
+                "accessKeyLabel": {
+                    "type": "string"
+                },
+                "ariaAtomic": {
+                    "type": "string"
+                },
+                "ariaAutoComplete": {
+                    "type": "string"
+                },
+                "ariaBusy": {
+                    "type": "string"
+                },
+                "ariaChecked": {
+                    "type": "string"
+                },
+                "ariaColCount": {
+                    "type": "string"
+                },
+                "ariaColIndex": {
+                    "type": "string"
+                },
+                "ariaColSpan": {
+                    "type": "string"
+                },
+                "ariaCurrent": {
+                    "type": "string"
+                },
+                "ariaDisabled": {
+                    "type": "string"
+                },
+                "ariaExpanded": {
+                    "type": "string"
+                },
+                "ariaHasPopup": {
+                    "type": "string"
+                },
+                "ariaHidden": {
+                    "type": "string"
+                },
+                "ariaInvalid": {
+                    "type": "string"
+                },
+                "ariaKeyShortcuts": {
+                    "type": "string"
+                },
+                "ariaLabel": {
+                    "type": "string"
+                },
+                "ariaLevel": {
+                    "type": "string"
+                },
+                "ariaLive": {
+                    "type": "string"
+                },
+                "ariaModal": {
+                    "type": "string"
+                },
+                "ariaMultiLine": {
+                    "type": "string"
+                },
+                "ariaMultiSelectable": {
+                    "type": "string"
+                },
+                "ariaOrientation": {
+                    "type": "string"
+                },
+                "ariaPlaceholder": {
+                    "type": "string"
+                },
+                "ariaPosInSet": {
+                    "type": "string"
+                },
+                "ariaPressed": {
+                    "type": "string"
+                },
+                "ariaReadOnly": {
+                    "type": "string"
+                },
+                "ariaRequired": {
+                    "type": "string"
+                },
+                "ariaRoleDescription": {
+                    "type": "string"
+                },
+                "ariaRowCount": {
+                    "type": "string"
+                },
+                "ariaRowIndex": {
+                    "type": "string"
+                },
+                "ariaRowSpan": {
+                    "type": "string"
+                },
+                "ariaSelected": {
+                    "type": "string"
+                },
+                "ariaSetSize": {
+                    "type": "string"
+                },
+                "ariaSort": {
+                    "type": "string"
+                },
+                "ariaValueMax": {
+                    "type": "string"
+                },
+                "ariaValueMin": {
+                    "type": "string"
+                },
+                "ariaValueNow": {
+                    "type": "string"
+                },
+                "ariaValueText": {
+                    "type": "string"
+                },
+                "autocapitalize": {
+                    "type": "string"
+                },
+                "autofocus": {
+                    "type": "boolean"
+                },
+                "baseURI": {
+                    "type": "string"
+                },
+                "childElementCount": {
+                    "type": "number"
+                },
+                "className": {
+                    "type": "string"
+                },
+                "clientHeight": {
+                    "type": "number"
+                },
+                "clientLeft": {
+                    "type": "number"
+                },
+                "clientTop": {
+                    "type": "number"
+                },
+                "clientWidth": {
+                    "type": "number"
+                },
+                "contentEditable": {
+                    "type": "string"
+                },
+                "dataset": {
+                    "$ref": "#/definitions/DOMStringMap"
+                },
+                "dir": {
+                    "type": "string"
+                },
+                "draggable": {
+                    "type": "boolean"
+                },
+                "enterKeyHint": {
+                    "type": "string"
+                },
+                "hidden": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "inert": {
+                    "type": "boolean"
+                },
+                "innerHTML": {
+                    "type": "string"
+                },
+                "innerText": {
+                    "type": "string"
+                },
+                "inputMode": {
+                    "type": "string"
+                },
+                "isConnected": {
+                    "type": "boolean"
+                },
+                "isContentEditable": {
+                    "type": "boolean"
+                },
+                "lang": {
+                    "type": "string"
+                },
+                "localName": {
+                    "type": "string"
+                },
+                "namespaceURI": {
+                    "type": "string"
+                },
+                "nodeName": {
+                    "type": "string"
+                },
+                "nodeType": {
+                    "type": "number"
+                },
+                "nodeValue": {
+                    "type": "string"
+                },
+                "nonce": {
+                    "type": "string"
+                },
+                "offsetHeight": {
+                    "type": "number"
+                },
+                "offsetLeft": {
+                    "type": "number"
+                },
+                "offsetTop": {
+                    "type": "number"
+                },
+                "offsetWidth": {
+                    "type": "number"
+                },
+                "outerHTML": {
+                    "type": "string"
+                },
+                "outerText": {
+                    "type": "string"
+                },
+                "prefix": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "scrollHeight": {
+                    "type": "number"
+                },
+                "scrollLeft": {
+                    "type": "number"
+                },
+                "scrollTop": {
+                    "type": "number"
+                },
+                "scrollWidth": {
+                    "type": "number"
+                },
+                "slot": {
+                    "type": "string"
+                },
+                "spellcheck": {
+                    "type": "boolean"
+                },
+                "tabIndex": {
+                    "type": "number"
+                },
+                "tagName": {
+                    "type": "string"
+                },
+                "textContent": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "translate": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "PointerButtonType": {
+            "enum": [
+                "auxiliary",
+                "back",
+                "forward",
+                "primary",
+                "secondary"
+            ],
+            "type": "string"
+        },
+        "PointerDeviceType": {
+            "enum": [
+                "mouse",
+                "pen",
+                "touch"
+            ],
+            "type": "string"
+        },
+        "ScrollElementStep": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ScrollPageStep"
+                },
+                {
+                    "$ref": "#/definitions/StepWithSelectors"
+                }
+            ]
+        },
+        "ScrollPageStep": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "frame": {
+                    "description": "Defaults to main frame",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "scroll",
+                    "type": "string"
+                },
+                "x": {
+                    "description": "Absolute scroll x position in px. Defaults to 0",
+                    "type": "number"
+                },
+                "y": {
+                    "description": "Absolute scroll y position in px. Defaults to 0",
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "Selector": {
+            "anyOf": [
+                {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "SetViewportStep": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "deviceScaleFactor": {
+                    "type": "number"
+                },
+                "hasTouch": {
+                    "type": "boolean"
+                },
+                "height": {
+                    "type": "number"
+                },
+                "isLandscape": {
+                    "type": "boolean"
+                },
+                "isMobile": {
+                    "type": "boolean"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "setViewport",
+                    "type": "string"
+                },
+                "width": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "Step": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/DoubleClickStep"
+                },
+                {
+                    "$ref": "#/definitions/ClickStep"
+                },
+                {
+                    "$ref": "#/definitions/HoverStep"
+                },
+                {
+                    "$ref": "#/definitions/ChangeStep"
+                },
+                {
+                    "$ref": "#/definitions/EmulateNetworkConditionsStep"
+                },
+                {
+                    "$ref": "#/definitions/KeyDownStep"
+                },
+                {
+                    "$ref": "#/definitions/KeyUpStep"
+                },
+                {
+                    "$ref": "#/definitions/CloseStep"
+                },
+                {
+                    "$ref": "#/definitions/SetViewportStep"
+                },
+                {
+                    "$ref": "#/definitions/ScrollPageStep"
+                },
+                {
+                    "$ref": "#/definitions/ScrollElementStep"
+                },
+                {
+                    "$ref": "#/definitions/NavigateStep"
+                },
+                {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/CustomStepParams"
+                        },
+                        {
+                            "$ref": "#/definitions/StepWithTarget"
+                        }
+                    ]
+                },
+                {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/CustomStepParams"
+                        },
+                        {
+                            "$ref": "#/definitions/StepWithFrame"
+                        }
+                    ]
+                },
+                {
+                    "$ref": "#/definitions/WaitForElementStep"
+                },
+                {
+                    "$ref": "#/definitions/WaitForExpressionStep"
+                }
+            ]
+        },
+        "StepType": {
+            "enum": [
+                "change",
+                "click",
+                "close",
+                "customStep",
+                "doubleClick",
+                "emulateNetworkConditions",
+                "hover",
+                "keyDown",
+                "keyUp",
+                "navigate",
+                "scroll",
+                "setViewport",
+                "waitForElement",
+                "waitForExpression"
+            ],
+            "type": "string"
+        },
+        "StepWithFrame": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "frame": {
+                    "description": "Defaults to main frame",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "$ref": "#/definitions/StepType"
+                }
+            },
+            "type": "object"
+        },
+        "StepWithSelectors": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "frame": {
+                    "description": "Defaults to main frame",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "selectors": {
+                    "description": "A list of alternative selectors that lead to selection of a single element\nto perform the step on. Currently, we support CSS selectors, ARIA selectors\n(start with 'aria/'), XPath selectors (start with `xpath/`) and text\nselectors (start with `text/`). Each selector could be a string or an array\nof strings. If it's a string, it means that the selector points directly to\nthe target element. If it's an array, the last element is the selector for\nthe target element and the preceding selectors point to the ancestor\nelements. If the parent element is a shadow root host, the subsequent\nselector is evaluated only against the shadow DOM of the host (i.e.,\n`parent.shadowRoot.querySelector`). If the parent element is not a shadow\nroot host, the subsequent selector is evaluated in the regular DOM (i.e.,\n`parent.querySelector`).\n\nDuring the execution, it's recommended that the implementation tries out\nall of the alternative selectors to improve reliability of the replay as\nsome selectors might get outdated over time.",
+                    "items": {
+                        "$ref": "#/definitions/Selector"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "$ref": "#/definitions/StepType"
+                }
+            },
+            "type": "object"
+        },
+        "StepWithTarget": {
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "$ref": "#/definitions/StepType"
+                }
+            },
+            "type": "object"
+        },
+        "WaitForElementStep": {
+            "description": "`waitForElement` allows waiting for the presence (or absence) of the number\nof elements identified by the selector.\n\nFor example, the following step would wait for less than three elements\nto be on the page that match the selector `.my-class`.\n\n```\n{\n  \"type\": \"waitForElement\",\n  \"selectors\": [\".my-class\"],\n  \"operator\": \"<=\",\n  \"count\": 2,\n}\n```",
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "attributes": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Whether to also check the element(s) for the given attributes.",
+                    "type": "object"
+                },
+                "count": {
+                    "type": "number"
+                },
+                "frame": {
+                    "description": "Defaults to main frame",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "operator": {
+                    "enum": [
+                        "<=",
+                        "==",
+                        ">="
+                    ],
+                    "type": "string"
+                },
+                "properties": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/Partial<JSONSerializable<HTMLElement>>"
+                        },
+                        {
+                            "additionalProperties": {
+                                "$ref": "#/definitions/JSONValue"
+                            },
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Whether to also check the element(s) for the given properties."
+                },
+                "selectors": {
+                    "description": "A list of alternative selectors that lead to selection of a single element\nto perform the step on. Currently, we support CSS selectors, ARIA selectors\n(start with 'aria/'), XPath selectors (start with `xpath/`) and text\nselectors (start with `text/`). Each selector could be a string or an array\nof strings. If it's a string, it means that the selector points directly to\nthe target element. If it's an array, the last element is the selector for\nthe target element and the preceding selectors point to the ancestor\nelements. If the parent element is a shadow root host, the subsequent\nselector is evaluated only against the shadow DOM of the host (i.e.,\n`parent.shadowRoot.querySelector`). If the parent element is not a shadow\nroot host, the subsequent selector is evaluated in the regular DOM (i.e.,\n`parent.querySelector`).\n\nDuring the execution, it's recommended that the implementation tries out\nall of the alternative selectors to improve reliability of the replay as\nsome selectors might get outdated over time.",
+                    "items": {
+                        "$ref": "#/definitions/Selector"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "waitForElement",
+                    "type": "string"
+                },
+                "visible": {
+                    "description": "Whether to wait for elements matching this step to be hidden. This can be\nthought of as an inversion of this step.",
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "WaitForExpressionStep": {
+            "description": "`waitForExpression` allows for a JavaScript expression to resolve to truthy\nvalue.\n\nFor example, the following step pauses for two seconds and then resolves to\ntrue allowing the replay to continue.\n\n```\n{\n  \"type\": \"waitForExpression\",\n  \"expression\": \"new Promise(resolve => setTimeout(() => resolve(true),\n2000))\",\n}\n```",
+            "properties": {
+                "assertedEvents": {
+                    "items": {
+                        "$ref": "#/definitions/NavigationEvent"
+                    },
+                    "type": "array"
+                },
+                "expression": {
+                    "type": "string"
+                },
+                "frame": {
+                    "description": "Defaults to main frame",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "description": "Defaults to main",
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "waitForExpression",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "properties": {
+        "selectorAttribute": {
+            "description": "The name of the attribute to use to generate selectors instead of regular\nCSS selectors. For example, specifying `data-testid` would generate the\nselector `[data-testid=value]` for the element `<div data-testid=value>`.",
+            "type": "string"
+        },
+        "steps": {
+            "items": {
+                "$ref": "#/definitions/Step"
+            },
+            "type": "array"
+        },
+        "timeout": {
+            "description": "Timeout in milliseconds.",
+            "type": "number"
+        },
+        "title": {
+            "description": "Human-readble title describing the recorder user flow.",
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+
