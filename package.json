@@ -39,7 +39,8 @@
     "docs": "typedoc --tsconfig docs.tsconfig.json --readme none --gitRevision main --externalPattern --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-markdown --out docs/api src/main.ts && npm run format",
     "clean": "rimraf lib",
     "build": "npm run clean && rollup --config rollup.config.cjs",
-    "build:testserver": "cd third_party/testserver && npm run build"
+    "build:testserver": "cd third_party/testserver && npm run build",
+    "generate:schema:userflow": "npx -y typescript-json-schema ./src/Schema.ts UserFlow -o ./json_schema/Schema/UserFlow.json"
   },
   "files": [
     "lib",
